@@ -159,7 +159,7 @@ Reply      (Telegram)
 
 <br/><br/>
 
-<img src="assets/screenshots/telegram.jpeg" width="450"/>
+<img src="assets/screenshots/telegram.jpeg" width="850"/>
 <em>Telegram approval flow — inline buttons for each pending email</em>
 
 </div>
