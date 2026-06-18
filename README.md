@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/screenshots/dashboard.png" alt="AI Email Assistant" width="100%"/>
+<img src="assets/screenshots/dashboard.png" alt="AI Email Assistant" width="85%"/>
 
-# AI Email Assistant
+# AI Email Assistant — Human-in-the-Loop Email Automation
 
 **Intelligent Gmail automation with a human-in-the-loop safety layer**
 
@@ -18,6 +18,36 @@ Reads, classifies, and summarizes incoming Gmail — then decides whether to aut
 [Quick Start](#-quick-start) · [Features](#-features) · [Architecture](#️-architecture) · [Screenshots](#-screenshots) · [Demo](#-demo)
 
 </div>
+
+---
+
+## Key Highlights
+
+✅ Gmail OAuth2 Authentication
+
+✅ AI Email Classification & Summarization
+
+✅ Human Decision Detection Layer
+
+✅ Sensitive Email Protection (OTP & Banking Alerts)
+
+✅ Telegram Approval Workflow
+
+✅ Professional AI Reply Generation
+
+✅ Real-Time Streamlit Dashboard
+
+✅ SQLite Persistence & Analytics
+
+---
+
+## Why This Project?
+
+Most email assistants automatically generate and send replies.
+
+This system introduces a Human Decision Detection Layer that prevents AI from making personal commitments, confirming availability, or answering questions that require user knowledge without explicit approval.
+
+The result is safer and more trustworthy email automation.
 
 ---
 
@@ -116,27 +146,27 @@ dashboard/app.py (Streamlit)
 
 <div align="center">
 
-<img src="assets/screenshots/dashboard.png" width="100%"/>
+<img src="assets/screenshots/dashboard.png" width="500"/>
 <em>Dashboard — KPI cards, system status, tech stack</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/recent-emails.png" width="100%"/>
+<img src="assets/screenshots/recent-emails.png" width="500"/>
 <em>Emails tab — category chart and color-coded cards with priority badges</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/sensitive.png" width="100%"/>
+<img src="assets/screenshots/sensitive.png" width="500"/>
 <em>Sensitive tab — codes masked, auto-reply blocked</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/pending.png" width="100%"/>
+<img src="assets/screenshots/pending.png" width="500"/>
 <em>Pending tab — AI draft shown, Telegram action buttons, flagging reason</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/analytics.png" width="100%"/>
+<img src="assets/screenshots/analytics.png" width="500"/>
 <em>Analytics tab — distributions, timeline, full stats grid</em>
 
 <br/><br/>
@@ -198,11 +228,10 @@ python auth/gmail_auth.py
 python main.py
 
 # Continuous monitoring (production)
-python monitor.py                    # Terminal 1
-python telegram_callback_handler.py  # Terminal 2
+python monitor.py                    
 
 # Dashboard
-streamlit run dashboard/app.py       # http://localhost:8501
+streamlit run dashboard/app.py  
 ```
 
 ---
@@ -258,7 +287,7 @@ CREATE TABLE processed_emails (
 ```bash
 pip install pytest pytest-mock
 pytest tests/ -v
-# 30 passed in ~2.4s
+# 17 passed in 6.77s~
 ```
 
 Covers: regex OTP/bank detection, code masking, LLM-fallback safe mode, human-decision regex triggers, auto-reply allowlist, and subtle LLM-caught cases.
@@ -279,7 +308,20 @@ The AI will **never** automatically claim you completed a task, accept a meeting
 
 ---
 
-## Roadmap
+## Tech Stack
+
+| Layer | Technology |
+|---------|------------|
+| Language | Python |
+| Email | Gmail API |
+| AI | OpenRouter GPT-4o-mini |
+| Notifications | Telegram Bot API |
+| Database | SQLite |
+| Dashboard | Streamlit + Plotly |
+| Authentication | OAuth2 |
+| Storage | Local DB |
+
+## Future Improvements
 
 - [ ] Gmail Push Notifications via Pub/Sub (replace polling)
 - [ ] Email thread context for smarter reply continuity
@@ -288,6 +330,10 @@ The AI will **never** automatically claim you completed a task, accept a meeting
 - [ ] PostgreSQL migration for multi-user support
 - [ ] Docker + Railway/Render deployment
 - [ ] Web-based approval interface (alternative to Telegram)
+- [ ] Google Calendar Integration
+- [ ] Smart Availability Detection
+- [ ] Voice Approval Through Telegram
+- [ ] Multi-User Support
 
 ---
 
@@ -305,37 +351,75 @@ The AI will **never** automatically claim you completed a task, accept a meeting
 ---
 
 ## Project Structure
-
-```
+```text
 ai-email-assistant/
 ├── ai_processing/
-│   ├── sensitive_detector.py   # 40+ regex + LLM fallback
-│   ├── decision_detector.py    # 20+ regex + LLM safety check
-│   ├── summarizer.py
-│   ├── classifier.py
-│   ├── priority_analyzer.py
-│   └── reply_generator.py
-├── auth/gmail_auth.py          # OAuth2 token lifecycle
-├── email_engine/
-│   ├── fetcher.py              # Gmail API list + get
-│   └── parser.py               # MIME decode, headers
+│   ├── __init__.py
+│   ├── classifier.py              # Email category classification
+│   ├── decision_detector.py       # Human Decision Detection Layer
+│   ├── priority_analyzer.py       # Urgency & priority scoring
+│   ├── reply_generator.py         # AI reply generation
+│   ├── sensitive_detector.py      # Sensitive email detection + masking
+│   └── summarizer.py              # AI email summarization
+│
+├── auth/
+│   └── gmail_auth.py              # Gmail OAuth2 authentication
+│
+├── dashboard/
+│   ├── __init__.py
+│   └── app.py                     # Streamlit analytics dashboard
+│
+├── database/
+│   ├── __init__.py
+│   └── db_manager.py              # SQLite database management
+│
 ├── drafts/
-│   ├── gmail_sender.py         # safe_send_reply() with 3 gates
-│   └── gmail_draft_creator.py
-├── database/db_manager.py      # SQLite CRUD + reply_status tracking
-├── storage/data_store.py       # Repository abstraction
-├── notifications/telegram_service.py
-├── dashboard/app.py            # Streamlit dark dashboard
-├── utils/logger.py             # Rotating file + console logger
+│   ├── __init__.py
+│   ├── gmail_draft_creator.py     # Gmail draft creation
+│   ├── gmail_sender.py            # Safe email sending
+│   └── pending_edits.json         # Telegram edit workflow state
+│
+├── email_engine/
+│   ├── __init__.py
+│   ├── fetcher.py                 # Gmail API email retrieval
+│   └── parser.py                  # MIME parsing & content extraction
+│
+├── notifications/
+│   ├── __init__.py
+│   ├── telegram_service.py        # Telegram notifications
+│   └── telegram_approval.py       # Approval workflow & inline buttons
+│
+├── storage/
+│   ├── __init__.py
+│   └── data_store.py              # Data access abstraction layer
+│
 ├── tests/
-│   ├── test_sensitive_detector.py  # 14 tests
-│   └── test_decision_detector.py   # 16 tests
-├── main.py
-├── monitor.py
-├── telegram_callback_handler.py
-└── setup_check.py
+│   ├── __init__.py
+│   └── test_sensitive_detector.py # Sensitive detection tests
+│
+├── utils/
+│   ├── __init__.py
+│   └── logger.py                  # Logging configuration
+│
+├── assets/
+│   ├── demo.gif
+│   └── screenshots/
+│       ├── dashboard.png
+│       ├── recent-emails.png
+│       ├── sensitive.png
+│       ├── pending.png
+│       ├── analytics.png
+│       └── telegram.jpeg
+│
+├── main.py                        # Main processing pipeline
+├── monitor.py                     # Continuous email monitoring
+├── setup_check.py                 # Environment verification
+├── requirements.txt
+├── README.md
+├── LICENSE
+├── .env.example
+└── .gitignore
 ```
-
 ---
 
 ## License
