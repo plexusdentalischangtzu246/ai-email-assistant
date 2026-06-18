@@ -102,42 +102,30 @@ Two-layer detection (40+ regex patterns + LLM deep scan) covering OTPs, bank ale
 Gmail Inbox (OAuth2)
         │
         ▼
-email_engine/
-  fetcher.py   ← Gmail API list() + get()
-  parser.py    ← MIME decode, base64url, header extraction
+ Email Fetch & Parse
         │
         ▼
-ai_processing/
-  1. sensitive_detector   ← RUNS FIRST (40+ regex → LLM fallback)
-     masks codes, overrides category, blocks reply
-  2. summarizer           ← 3-bullet summary
-  3. classifier           ← 6 categories + SENSITIVE override
-  4. priority_analyzer    ← score 1–10, urgency, action flag
-  5. decision_detector    ← RUNS BEFORE REPLY (20+ regex → LLM fallback)
-     returns AUTO_REPLY_ALLOWED or HUMAN_DECISION_REQUIRED
-  6. reply_generator      ← professional draft
+ Sensitive Detector
+        │
+        ▼
+ AI Processing Pipeline
+ ├─ Summarizer
+ ├─ Classifier
+ ├─ Priority Analyzer
+ ├─ Decision Detector
+ └─ Reply Generator
         │
    ┌────┴────┐
    ▼         ▼
-AUTO      HUMAN_DECISION_REQUIRED
-REPLY       │
-  │         ▼
-  │    telegram_service.py
-  │    → Inline approval buttons
-  │    → Email saved as PENDING_APPROVAL
-  │
-  ▼
-drafts/gmail_sender.py
-  3 safety gates:
-  · category allowlist check
-  · email address validation
-  · no-reply detection
+Auto      Human Approval
+Reply      (Telegram)
+   │         │
+   └────┬────┘
+        ▼
+ SQLite Storage
         │
         ▼
-storage/data_store.py → database/db_manager.py (SQLite)
-        │
-        ▼
-dashboard/app.py (Streamlit)
+ Streamlit Dashboard
 ```
 
 ---
@@ -146,32 +134,32 @@ dashboard/app.py (Streamlit)
 
 <div align="center">
 
-<img src="assets/screenshots/dashboard.png" width="500"/>
+<img src="assets/screenshots/dashboard.png" width="850"/>
 <em>Dashboard — KPI cards, system status, tech stack</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/recent-emails.png" width="500"/>
+<img src="assets/screenshots/recent-emails.png" width="850"/>
 <em>Emails tab — category chart and color-coded cards with priority badges</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/sensitive.png" width="500"/>
+<img src="assets/screenshots/sensitive.png" width="850"/>
 <em>Sensitive tab — codes masked, auto-reply blocked</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/pending.png" width="500"/>
+<img src="assets/screenshots/pending.png" width="850"/>
 <em>Pending tab — AI draft shown, Telegram action buttons, flagging reason</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/analytics.png" width="500"/>
+<img src="assets/screenshots/analytics.png" width="850"/>
 <em>Analytics tab — distributions, timeline, full stats grid</em>
 
 <br/><br/>
 
-<img src="assets/screenshots/telegram.jpeg" width="60%"/>
+<img src="assets/screenshots/telegram.jpeg" width="450"/>
 <em>Telegram approval flow — inline buttons for each pending email</em>
 
 </div>
